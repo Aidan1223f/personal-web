@@ -7,23 +7,37 @@ import {
   Mail,
   Briefcase,
   FolderOpen,
-  Volume2,
-  Music,
   ExternalLink,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 // Using public assets
-const ALBUM_COVERS = [
-  '/assets/album1.png',
-  '/assets/album2.png',
-  '/assets/album3.png',
-  // Repeating for the grid
-  '/assets/album1.png',
-  '/assets/album2.png',
-  '/assets/album3.png',
-  '/assets/album1.png',
+// Authentic iOS Photos Icon from public assets
+const IOSPhotosIcon = ({ size = 16 }: { size?: number }) => (
+  <img
+    src="/assets/_.jpeg"
+    alt="iOS Photos Icon"
+    style={{ width: size, height: size, borderRadius: '4px', objectFit: 'cover' }}
+  />
+);
+
+const PLACE_PHOTOS = [
+  { src: '/assets/72A89FB3-37A0-4115-AB73-3E53FBC40075_4_5005_c.jpeg', location: 'Wyoming', date: 'June 2024' },
+  { src: '/assets/AC55EFE9-422A-4A52-AD3A-7F254C3A6CB1_1_105_c.jpeg', location: 'Wyoming', date: 'June 2024' },
+  { src: '/assets/F451049C-79E1-46DF-9AFD-41F53FB2FC92_1_102_o.jpeg', location: 'Half Dome, Yosemite', date: 'Sept 2023' },
+  { src: '/assets/IMG_0180.jpeg', location: 'New York City', date: 'July 2024' },
+  { src: '/assets/IMG_1585.jpeg', location: 'Black Sand Beach, HI', date: 'Dec 2023' },
+  { src: '/assets/96DC2562-5D96-4414-AB61-D83AB68A1232.jpeg', location: 'Zion National Park, UT', date: 'May 2024' },
+  { src: '/assets/235B1F6C-95FC-4827-A3F9-ED6B26FF2BD3_1_102_o.jpeg', location: 'Mount Whitney, CA', date: 'Aug 2024' },
+  { src: '/assets/C33C0CEC-22AB-4F4E-98BA-973A33AB1BEC_1_105_c.jpeg', location: 'Big Sur, CA', date: 'Jan 2025' },
 ];
+
+interface Photo {
+  src: string;
+  location: string;
+  date: string;
+}
 
 interface RetroWindowProps {
   title: string;
@@ -62,6 +76,7 @@ const NowPlaying = () => {
     song: string;
     artist: string;
     trackId?: string;
+    albumArt?: string;
   }>({
     isPlaying: false,
     song: "Not Playing",
@@ -81,7 +96,8 @@ const NowPlaying = () => {
             isPlaying: true,
             song: data.data.spotify.track,
             artist: data.data.spotify.artist,
-            trackId: data.data.spotify.track_id
+            trackId: data.data.spotify.track_id,
+            albumArt: data.data.spotify.album_art_url
           });
         } else {
           setStatus({ isPlaying: false, song: "Not Playing", artist: "Spotify" });
@@ -104,27 +120,36 @@ const NowPlaying = () => {
         rel="noopener noreferrer"
         style={{ textDecoration: 'none' }}
       >
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="speaker-button"
+        <motion.div
+          className={`vinyl-player ${status.isPlaying ? 'is-playing' : ''}`}
           title={`${status.song} - ${status.artist}`}
         >
-          <Volume2 size={24} color={status.isPlaying ? "#1DB954" : "#666"} />
-          {status.isPlaying && (
-            <div className="visualizer">
-              <div className="bar"></div>
-              <div className="bar"></div>
-              <div className="bar"></div>
-            </div>
-          )}
-        </motion.button>
+          <div className="vinyl-record">
+            <img
+              src={status.albumArt || 'https://via.placeholder.com/150'}
+              className="album-art"
+              alt="Album Art"
+            />
+            <div className="vinyl-grooves"></div>
+          </div>
+          <div className="vinyl-needle"></div>
+        </motion.div>
+
+
       </a>
       <div className="song-info">
+        {status.isPlaying && (
+          <div className="audio-wave">
+            <div className="wave-bar"></div>
+            <div className="wave-bar"></div>
+            <div className="wave-bar"></div>
+            <div className="wave-bar"></div>
+          </div>
+        )}
         <span className="song-name">{status.song}</span>
         <span className="artist-name">{status.artist}</span>
       </div>
-    </div>
+    </div >
   );
 };
 
@@ -194,6 +219,17 @@ const ProjectItem = ({
 );
 
 function App() {
+  const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
+
+  // Close modal on escape key
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedPhoto(null);
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
+
   return (
     <div className="container">
       <div className="bg-animation">
@@ -281,20 +317,58 @@ function App() {
           />
         </RetroWindow>
 
-        <RetroWindow title="music i like" icon={<Music size={16} />} delay={0.4}>
-          <div className="music-grid">
-            {ALBUM_COVERS.map((src, i) => (
+        <RetroWindow title="photo album" icon={<IOSPhotosIcon size={18} />} delay={0.4}>
+          <div className="places-grid">
+            {PLACE_PHOTOS.map((photo, i) => (
               <motion.div
                 key={i}
-                className="music-item"
-                whileHover={{ scale: 1.1, rotate: 2 }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                className="place-item"
+                initial={{ opacity: 0, scale: 0.9, rotate: Math.random() * 10 - 5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4 + (i * 0.1) }}
+                onClick={() => setSelectedPhoto(photo)}
+                style={{ cursor: 'pointer' }}
               >
-                <img src={src} alt={`Album cover ${i + 1}`} loading="lazy" />
+                <div className="polaroid">
+                  <img src={photo.src} alt={photo.location} loading="lazy" />
+                  <div className="polaroid-label">
+                    {photo.location}
+                    <span className="polaroid-date">{photo.date}</span>
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </RetroWindow>
+
+        <AnimatePresence>
+          {selectedPhoto && (
+            <motion.div
+              className="photo-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedPhoto(null)}
+            >
+              <motion.div
+                className="expanded-polaroid-container"
+                initial={{ scale: 0.8, y: 20, opacity: 0 }}
+                animate={{ scale: 1, y: 0, opacity: 1 }}
+                exit={{ scale: 0.8, y: 20, opacity: 0 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="polaroid expanded">
+                  <img src={selectedPhoto.src} alt={selectedPhoto.location} />
+                  <div className="polaroid-label">
+                    {selectedPhoto.location}
+                    <span className="polaroid-date">{selectedPhoto.date}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       <motion.footer

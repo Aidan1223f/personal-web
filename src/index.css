@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Gochi+Hand&display=swap');
 
 :root {
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -115,61 +115,210 @@ a:hover {
 }
 
 .now-playing-container {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: rgba(0, 0, 0, 0.03);
-  padding: 0.4rem 0.8rem;
+  gap: 1.25rem;
+  background: white;
+  padding: 0.6rem 1.5rem 0.6rem 0.8rem;
   border-radius: 100px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  max-width: fit-content;
+  transition: all 0.3s ease;
 }
 
-.speaker-button {
-  background: none;
-  border: none;
-  cursor: pointer;
+.now-playing-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0.1) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.vinyl-player {
+  position: relative;
+  width: 58px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  z-index: 5;
+}
+
+.vinyl-record {
+  width: 100%;
+  height: 100%;
+  background: #111;
+  border-radius: 50%;
   position: relative;
-  padding: 0;
-}
-
-.visualizer {
+  overflow: hidden;
   display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 12px;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 0 10px rgba(255, 255, 255, 0.05);
+  border: 3px solid #1a1a1a;
+}
+
+.vinyl-player.is-playing .vinyl-record {
+  animation: spin 3s linear infinite;
+}
+
+.album-art {
+  width: 52%;
+  height: 52%;
+  border-radius: 50%;
+  z-index: 2;
+  object-fit: cover;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: #222;
+  /* Hidden behind real art */
+}
+
+/* Photo Modal Styles */
+.photo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.expanded-polaroid-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+.polaroid.expanded {
+  width: 450px;
+  max-width: 85vw;
+  padding: 16px 16px 80px 16px;
+  transform: rotate(0deg) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.polaroid.expanded .polaroid-label {
+  bottom: 20px;
+  font-size: 2.2rem;
+}
+
+.polaroid.expanded .polaroid-date {
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+/* Vinyl grooves texture */
+.vinyl-grooves {
   position: absolute;
-  bottom: -4px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center,
+      transparent 0,
+      transparent 38%,
+      rgba(255, 255, 255, 0.05) 39%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.05) 43%,
+      transparent 44%,
+      rgba(255, 255, 255, 0.05) 48%,
+      transparent 49%,
+      rgba(255, 255, 255, 0.05) 53%,
+      transparent 54%);
+  z-index: 1;
 }
 
-.visualizer .bar {
-  width: 2px;
-  height: 4px;
-  background: #1DB954;
-  animation: equalize 0.8s infinite ease-in-out;
+/* Glossy reflection */
+.vinyl-record::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg,
+      rgba(255, 255, 255, 0.12) 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.06) 50%,
+      transparent 60%,
+      rgba(255, 255, 255, 0.12) 100%);
+  z-index: 3;
+  pointer-events: none;
 }
 
-.visualizer .bar:nth-child(2) {
-  animation-delay: -0.2s;
+.vinyl-needle {
+  position: absolute;
+  top: 0;
+  right: -6px;
+  width: 20px;
+  height: 32px;
+  z-index: 5;
+  transform-origin: top right;
+  transform: rotate(-30deg);
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
-.visualizer .bar:nth-child(3) {
-  animation-delay: -0.4s;
+/* Tonearm body */
+.vinyl-needle::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 4px;
+  width: 3px;
+  height: 28px;
+  background: #cbd5e1;
+  border-radius: 4px;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
 }
 
-@keyframes equalize {
-  0% {
-    height: 4px;
+/* Cartridge head */
+.vinyl-needle::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 7px;
+  height: 10px;
+  background: #334155;
+  border-radius: 1px;
+  transform: rotate(30deg);
+}
+
+.vinyl-player.is-playing .vinyl-needle {
+  transform: rotate(4deg);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
   }
 
-  50% {
-    height: 12px;
-  }
-
-  100% {
-    height: 4px;
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -177,22 +326,74 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  line-height: 1.2;
+  gap: 0.15rem;
+  z-index: 5;
+}
+
+.audio-wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 14px;
+  margin-bottom: 2px;
+}
+
+.wave-bar {
+  width: 3px;
+  height: 6px;
+  background: #1DB954;
+  border-radius: 10px;
+  animation: wave-pulse 1s ease-in-out infinite;
+}
+
+.wave-bar:nth-child(2) {
+  animation-delay: 0.2s;
+  height: 12px;
+}
+
+.wave-bar:nth-child(3) {
+  animation-delay: 0.4s;
+  height: 9px;
+}
+
+.wave-bar:nth-child(4) {
+  animation-delay: 0.6s;
+  height: 13px;
+}
+
+@keyframes wave-pulse {
+
+  0%,
+  100% {
+    transform: scaleY(1);
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: scaleY(1.4);
+    opacity: 1;
+  }
 }
 
 .song-name {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  max-width: 150px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #444;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  max-width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .artist-name {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 500;
   color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
 }
 
 .container {
@@ -415,28 +616,86 @@ p {
   line-height: 1.5;
 }
 
-.music-grid {
+/* Polaroid Effect */
+.places-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 1rem;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-lg);
+  justify-items: center;
 }
 
-.music-item {
-  aspect-ratio: 1/1;
-  border-radius: 6px;
-  background: #eee;
-  overflow: hidden;
-  transition: transform 0.2s ease;
+.polaroid {
+  background: white;
+  padding: 8px 8px 48px 8px;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(0, 0, 0, 0.03);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  width: 140px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.music-item:hover {
-  transform: scale(1.05);
+.polaroid:hover {
+  transform: scale(1.1) rotate(0deg) !important;
+  z-index: 10;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
 }
 
-.music-item img {
+.polaroid img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 1/1;
   object-fit: cover;
+  filter: sepia(0.2) contrast(1.1) brightness(1.05);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  display: block;
+}
+
+.polaroid-label {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 0.9rem;
+  line-height: 1.1;
+  color: #333;
+  padding: 0 4px;
+}
+
+.polaroid-date {
+  font-size: 0.65rem;
+  opacity: 0.5;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Straighter effect */
+.polaroid:nth-child(even) {
+  transform: rotate(1deg);
+}
+
+.polaroid:nth-child(odd) {
+  transform: rotate(-1deg);
+}
+
+.polaroid:nth-child(3n) {
+  transform: rotate(0.5deg);
+}
+
+.polaroid:nth-child(4n) {
+  transform: rotate(-0.5deg);
+}
+
+.place-item {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 footer {
@@ -451,4 +710,58 @@ footer {
   justify-content: center;
   gap: 1.5rem;
   margin-bottom: 1rem;
+}
+
+/* Photo Overlay / Lightbox */
+.photo-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  padding: 2rem;
+}
+
+.expanded-polaroid-container {
+  max-width: 90vw;
+  max-height: 90vh;
+  cursor: default;
+}
+
+.polaroid.expanded {
+  width: min(600px, 85vw);
+  padding: 16px 16px 80px 16px;
+  transform: rotate(0) !important;
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3);
+}
+
+.polaroid.expanded .polaroid-label {
+  font-size: 1.8rem;
+  bottom: 16px;
+}
+
+.polaroid.expanded .polaroid-date {
+  font-size: 1rem;
+  margin-top: 4px;
+}
+
+@media (max-width: 600px) {
+  .places-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .polaroid.expanded {
+    padding-bottom: 60px;
+  }
+
+  .polaroid.expanded .polaroid-label {
+    font-size: 1.4rem;
+  }
 }
