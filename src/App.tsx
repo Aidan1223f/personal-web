@@ -247,7 +247,7 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+      <h1>
         Aidan Nguyen Tran <NowPlaying />
       </h1>
       <div style={{ display: 'flex', gap: '1.25rem', marginBottom: '1.25rem', fontSize: '0.9rem' }}>

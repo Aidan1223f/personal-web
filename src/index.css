@@ -481,6 +481,9 @@ h1 {
   font-weight: 600;
   margin-bottom: 0.4rem;
   letter-spacing: -0.03em;
+  display: flex;
+  align-items: center;
+  gap: 15px;
 }
 
 h2 {
@@ -757,20 +760,6 @@ footer {
   margin-top: 6px;
 }
 
-@media (max-width: 600px) {
-  .places-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .polaroid.expanded {
-    padding-bottom: 60px;
-  }
-
-  .polaroid.expanded .polaroid-label {
-    font-size: 1.4rem;
-  }
-}
-
 .building-section .retro-content {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -824,7 +813,6 @@ footer {
 .building-section .retro-header {
   position: relative;
   z-index: 20;
-  /* Ensure header elements stay above the glossy overlay */
 }
 
 .building-section .traffic-lights {
@@ -834,7 +822,168 @@ footer {
 
 .building-section .dot {
   opacity: 1;
-  /* Ensure dots are fully visible */
+}
+
+@media (max-width: 640px) {
+  .container {
+    padding: 1.5rem 1rem;
+  }
+
+  header {
+    margin-bottom: 2rem !important;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+
+  header p {
+    font-size: 0.95rem !important;
+  }
+
+  header p:first-of-type {
+    font-size: 1rem !important;
+  }
+
+  header>div:first-of-type {
+    flex-wrap: wrap;
+    gap: 0.75rem !important;
+    font-size: 0.85rem !important;
+  }
+
+  .now-playing-container {
+    padding: 0.4rem 1rem 0.4rem 0.6rem;
+    gap: 0.75rem;
+  }
+
+  .vinyl-player {
+    width: 44px;
+    height: 44px;
+  }
+
+  .song-name {
+    font-size: 0.75rem;
+  }
+
+  .artist-name {
+    font-size: 0.7rem;
+  }
+
+  .places-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .polaroid {
+    width: 100%;
+    padding-bottom: 40px;
+  }
+
+  .polaroid-label {
+    height: 40px;
+    font-size: 0.65rem;
+  }
+
+  .card {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .card-date {
+    font-size: 0.75rem;
+  }
+
+  .card-bullets-oneline {
+    font-size: 0.85rem;
+  }
+
+  .social-pill {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .footer-links {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .retro-header {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.75rem;
+  }
+
+  .retro-content {
+    padding: 0.6rem 1rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .container {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .places-grid {
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  header p {
+    font-size: 0.9rem !important;
+  }
+
+  .now-playing-container {
+    padding: 0.35rem 0.75rem 0.35rem 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .vinyl-player {
+    width: 38px;
+    height: 38px;
+  }
+
+  .song-name {
+    font-size: 0.7rem;
+  }
+
+  .artist-name {
+    font-size: 0.65rem;
+  }
+
+  .expanded-polaroid-container {
+    padding: 1rem;
+  }
+
+  .polaroid.expanded {
+    padding-bottom: 60px;
+  }
+
+  .polaroid.expanded .polaroid-label {
+    font-size: 1.2rem;
+    height: 60px;
+  }
+
+  .social-pill {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .retro-header {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+  }
 }
 
 .place-item,
