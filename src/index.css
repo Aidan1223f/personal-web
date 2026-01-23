@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Gochi+Hand&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
 
 :root {
   --font-sans: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -326,8 +326,15 @@ a:hover {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.15rem;
-  z-index: 5;
+  gap: 0.1rem;
+  z-index: 20;
+  min-width: 0;
+}
+
+.song-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .audio-wave {
@@ -335,7 +342,6 @@ a:hover {
   align-items: flex-end;
   gap: 2.5px;
   height: 14px;
-  margin-bottom: 2px;
 }
 
 .wave-bar {
@@ -376,15 +382,14 @@ a:hover {
 }
 
 .song-name {
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: #444;
-  letter-spacing: -0.02em;
+  color: #111;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
-  max-width: 200px;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  overflow: visible;
+  line-height: 1;
 }
 
 .artist-name {
@@ -399,7 +404,7 @@ a:hover {
 .container {
   max-width: 720px;
   margin: 0 auto;
-  padding: 4rem 1.5rem;
+  padding: 2.5rem 1.5rem;
 }
 
 .retro-window {
@@ -408,7 +413,7 @@ a:hover {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-md);
   overflow: hidden;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -467,14 +472,15 @@ a:hover {
 }
 
 .retro-content {
-  padding: 1rem 1.25rem;
+  padding: 0.75rem 1.25rem;
 }
 
 /* Typography Helpers */
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.1rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: -0.03em;
 }
 
 h2 {
@@ -559,11 +565,16 @@ p {
   background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
 }
 
+.social-pill.calendly {
+  background: #3b82f6;
+  padding: 0.5rem 1.1rem;
+}
+
 
 .card {
   display: flex;
   gap: 1rem;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--border-color);
 }
 
@@ -572,8 +583,8 @@ p {
 }
 
 .card-icon {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   border-radius: 8px;
   background: #f1f1f1;
   display: flex;
@@ -599,9 +610,9 @@ p {
 }
 
 .card-subtitle {
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   color: var(--text-tertiary);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.15rem;
 }
 
 .card-description {
@@ -625,19 +636,19 @@ p {
   background: rgba(0, 0, 0, 0.02);
   border-radius: var(--radius-lg);
   justify-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .polaroid {
   background: white;
-  padding: 8px 8px 48px 8px;
+  padding: 8px 8px 52px 8px;
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 0 20px rgba(0, 0, 0, 0.03);
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 10px 20px -5px rgba(0, 0, 0, 0.08);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   position: relative;
   width: 140px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.03);
 }
 
 .polaroid:hover {
@@ -657,40 +668,33 @@ p {
 
 .polaroid-label {
   position: absolute;
-  bottom: 8px;
+  bottom: 0;
   left: 0;
   right: 0;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  font-family: 'Gochi Hand', cursive;
-  font-size: 0.9rem;
-  line-height: 1.1;
-  color: #333;
-  padding: 0 4px;
+  font-family: "SF Mono", "Space Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 8px;
 }
 
 .polaroid-date {
-  font-size: 0.65rem;
-  opacity: 0.5;
+  font-size: 0.6rem;
+  opacity: 0.6;
   display: block;
+  font-weight: 400;
   margin-top: 2px;
 }
 
-/* Straighter effect */
-.polaroid:nth-child(even) {
-  transform: rotate(1deg);
-}
-
-.polaroid:nth-child(odd) {
-  transform: rotate(-1deg);
-}
-
-.polaroid:nth-child(3n) {
-  transform: rotate(0.5deg);
-}
-
-.polaroid:nth-child(4n) {
-  transform: rotate(-0.5deg);
-}
 
 .place-item {
   width: 100%;
@@ -700,7 +704,7 @@ p {
 
 footer {
   text-align: center;
-  padding-bottom: 4rem;
+  padding-bottom: 2.5rem;
   color: var(--text-tertiary);
   font-size: 0.9rem;
 }
@@ -737,19 +741,20 @@ footer {
 
 .polaroid.expanded {
   width: min(600px, 85vw);
-  padding: 16px 16px 80px 16px;
+  padding: 16px 16px 100px 16px;
   transform: rotate(0) !important;
   box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3);
 }
 
 .polaroid.expanded .polaroid-label {
-  font-size: 1.8rem;
-  bottom: 16px;
+  height: 100px;
+  font-size: 1.2rem;
+  letter-spacing: 0.1em;
 }
 
 .polaroid.expanded .polaroid-date {
-  font-size: 1rem;
-  margin-top: 4px;
+  font-size: 0.8rem;
+  margin-top: 6px;
 }
 
 @media (max-width: 600px) {
@@ -764,4 +769,75 @@ footer {
   .polaroid.expanded .polaroid-label {
     font-size: 1.4rem;
   }
+}
+
+.building-section .retro-content {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.building-section .card {
+  padding: 0.5rem 0;
+}
+
+.building-section .card-bullets-oneline {
+  margin-top: 0.2rem;
+}
+
+.building-section {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.building-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.4) 0%,
+      rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.building-section .retro-header {
+  background: transparent !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.building-section .card {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.building-section .card-icon {
+  background: rgba(0, 0, 0, 0.03);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.building-section .retro-header {
+  position: relative;
+  z-index: 20;
+  /* Ensure header elements stay above the glossy overlay */
+}
+
+.building-section .traffic-lights {
+  position: relative;
+  z-index: 21;
+}
+
+.building-section .dot {
+  opacity: 1;
+  /* Ensure dots are fully visible */
+}
+
+.place-item,
+.polaroid {
+  transform: rotate(0deg) !important;
 }
