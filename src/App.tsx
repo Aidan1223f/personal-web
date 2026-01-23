@@ -257,7 +257,7 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
       </div>
 
       <p style={{ maxWidth: '600px', fontSize: '1.05rem', color: '#444', marginBottom: '0.6rem' }}>
-        Eastvale, CA → UCSD Data Science. I love movies, climbing, camping, MMA, and basketball. I'm passionate about scaling SanD Diego's startup scene, consumer AI, and
+        Eastvale, CA → UCSD Data Science. I love movies, climbing, camping, MMA, and basketball. I'm passionate about scaling SD's startup scene, consumer AI, and AI saftey/politics.
       </p>
 
       <p style={{ color: '#666', fontSize: '0.92rem', marginBottom: '0' }}>
