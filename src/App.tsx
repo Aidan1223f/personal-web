@@ -301,11 +301,10 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
         />
       </RetroWindow>
 
-      <RetroWindow title="Projects" icon={<img src="/assets/terminal.png" alt="Terminal" style={{ width: 18, height: 18, objectFit: 'contain' }} />} delay={0.3}>
+      <RetroWindow title="Projects" icon={<img src="/assets/uzi_thug.jpg" alt="Projects" style={{ width: 14, height: 14, borderRadius: '2px', objectFit: 'cover' }} />} delay={0.3}>
         <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#666', fontStyle: 'italic' }}>
           Under construction. All my projects turn to start-ups lol.
-          Looking to build internal open-source frameworks and agentic systems for GTM, marketing, and product development. <a href="mailto:aidan.nt76@gmail.com" style={{ color: '#3b82f6', fontWeight: 500 }}>contact me</a>
-          if you wanna work together.
+          Looking to build internal open-source frameworks and agentic systems for GTM, marketing, and product development in the future. <a href="mailto:aidan.nt76@gmail.com" style={{ color: '#3b82f6', fontWeight: 500 }}>Email me</a> if you wanna work together.
         </div>
       </RetroWindow>
 
