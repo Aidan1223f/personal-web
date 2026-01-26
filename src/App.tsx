@@ -301,6 +301,21 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
         />
       </RetroWindow>
 
+      <RetroWindow title="Experience" icon={<Briefcase size={16} />} delay={0.25}>
+        <ExperienceItem
+          title="Growth Intern"
+          company="Cluely"
+          date="Jul 2025 - Sep 2025"
+          icon={<img src="/assets/cluely.jpeg" alt="Cluely" style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }} />}
+          bullets={[
+            "Created and published engaging UGC across multiple platforms",
+            "Maintained a rigorous posting schedule, creating and publishing UGC 6 times per week to ensure constant brand visibility",
+            "Collaborated with the growth team to plan and execute content strategies aligned with marketing objectives",
+            "Monitored and analyzed content performance metrics, implementing improvements to boost reach and conversions"
+          ]}
+        />
+      </RetroWindow>
+
       <RetroWindow title="Projects" icon={<img src="/assets/terminal.png" alt="Terminal" style={{ width: 18, height: 18, objectFit: 'contain' }} />} delay={0.3}>
         <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#666', fontStyle: 'italic' }}>
           Under construction. All my projects turn to start-ups lol.
