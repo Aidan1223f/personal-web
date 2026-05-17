@@ -1034,13 +1034,12 @@ p {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-family: "SF Mono", "Space Mono", ui-monospace, monospace;
+  font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.25;
   color: #555;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
   padding: 0 8px;
 }
 
@@ -1106,7 +1105,7 @@ footer {
 .polaroid.expanded .polaroid-label {
   height: 100px;
   font-size: 1.2rem;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.01em;
 }
 
 .polaroid.expanded .polaroid-date {

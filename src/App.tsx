@@ -432,7 +432,7 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
       </section>
 
       <p className="site-header__bio">
-        SF. Currently on leave from ucsd to lead growth at{' '} 
+        Based in San Francisco. Currently on leave from ucsd to lead growth at{' '} 
         <a href="https://gallium.ai" target="_blank" rel="noopener noreferrer">Gallium</a> and hopefully retire my parents. <br /> <br /> I'm passionate about men's mental health and enviromental sustainability
          - In my free time I explore how agentic workflows can improve these areas <br /> <br />
 
