@@ -1,16 +1,39 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
   Github,
   Linkedin,
   Instagram,
-  Mail,
   Briefcase,
   FolderOpen,
   ExternalLink,
+  FileText,
+  BookOpen,
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+
+const HERO_BANNER_SRC = '/assets/hero-mountain-banner.png';
+const HERO_BANNER_WEBP = '/assets/hero-mountain-banner.webp';
+
+function HeroMountainBanner() {
+  return (
+    <div className="hero-mountain-banner" aria-hidden={true}>
+      <picture className="hero-mountain-banner__media">
+        <source srcSet={HERO_BANNER_WEBP} type="image/webp" />
+        <img
+          src={HERO_BANNER_SRC}
+          alt=""
+          width={1024}
+          height={625}
+          decoding="async"
+          loading="eager"
+        />
+      </picture>
+      <div className="hero-mountain-banner__scrim" />
+    </div>
+  );
+}
 
 // Using public assets
 // Authentic iOS Photos Icon from public assets
@@ -20,6 +43,12 @@ const IOSPhotosIcon = ({ size = 16 }: { size?: number }) => (
     alt="iOS Photos Icon"
     style={{ width: size, height: size, borderRadius: '4px', objectFit: 'cover' }}
   />
+);
+
+const XIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
 );
 
 const PLACE_PHOTOS = [
@@ -55,11 +84,6 @@ const RetroWindow: React.FC<RetroWindowProps> = ({ title, icon, children, delay 
     transition={{ duration: 0.5, delay, ease: [0.23, 1, 0.32, 1] }}
   >
     <div className="retro-header">
-      <div className="traffic-lights">
-        <div className="dot dot-red"></div>
-        <div className="dot dot-yellow"></div>
-        <div className="dot dot-green"></div>
-      </div>
       <div className="section-icon">
         {icon}
         <span>{title}</span>
@@ -169,6 +193,27 @@ const NowPlaying = () => {
   );
 };
 
+const GalliumLogoIcon = () => {
+  const reduceMotion = useReducedMotion();
+  return (
+    <motion.img
+      src="/assets/gallium-logo.png"
+      alt="Gallium"
+      style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover', display: 'block' }}
+      animate={reduceMotion ? { rotate: 0 } : { rotate: 360 }}
+      transition={
+        reduceMotion
+          ? undefined
+          : { duration: 22, repeat: Infinity, ease: 'linear' }
+      }
+      whileHover={
+        reduceMotion
+          ? undefined
+          : { scale: 1.06, transition: { type: 'spring', stiffness: 420, damping: 18 } }
+      }
+    />
+  );
+};
 
 const ExperienceItem = ({
   title,
@@ -177,96 +222,228 @@ const ExperienceItem = ({
   description,
   bullets,
   icon,
-  url
+  url,
+  iconClassName,
 }: {
   title: string;
-  company: string;
-  date: string;
+  company?: string;
+  date?: string;
   description?: string;
   bullets?: string[];
   icon?: React.ReactNode;
   url?: string;
+  iconClassName?: string;
 }) => (
   <div className="card">
-    <div className="card-icon">
-      {icon || <Briefcase size={20} className="text-gray-400" />}
-    </div>
-    <div className="card-info">
-      <div className="card-header">
-        <h3>{title}</h3>
-        <span className="card-date">{date}</span>
+      <div className={iconClassName ? `card-icon ${iconClassName}` : 'card-icon'}>
+        {icon || <Briefcase size={20} className="text-gray-400" />}
       </div>
-      <div className="card-subtitle">
-        {url ? (
-          <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
-            {company} <ExternalLink size={12} />
-          </a>
-        ) : company}
-      </div>
-      {description && <div className="card-description">{description}</div>}
-      {bullets && (
-        <div className="card-bullets-oneline">
-          {bullets.join(' • ')}
+      <div className="card-info">
+        <div className="card-header">
+          <h3>{title}</h3>
+          {date ? <span className="card-date">{date}</span> : null}
         </div>
-      )}
+        {company ? (
+          <div className="card-subtitle">
+            {url ? (
+              <a href={url} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                {company} <ExternalLink size={12} />
+              </a>
+            ) : (
+              company
+            )}
+          </div>
+        ) : null}
+        {description && <div className="card-description">{description}</div>}
+        {bullets && bullets.length > 0 && (
+          <div
+            className={`card-bullets-oneline${bullets.length > 1 ? ' card-bullets-oneline--comma' : ''}`}
+          >
+            {bullets.join(', ')}
+          </div>
+        )}
+      </div>
     </div>
-  </div>
 );
 
-const ComingSoon = () => (
+const READING_LIST = [
+  {
+    title: 'The Alchemist',
+    author: 'Paulo Coelho',
+    coverSrc: '/assets/the-alchemist-cover.png',
+  },
+  {
+    title: 'The Sympathizer',
+    author: 'Viet Thanh Nguyen',
+    coverSrc: '/assets/the-sympathizer-cover.png',
+  },
+  {
+    title: 'East of Eden',
+    author: 'John Steinbeck',
+    coverSrc: '/assets/east-of-eden-cover.png',
+  },
+] as const;
+
+const ReadingPage = () => (
   <motion.div
-    className="retro-window"
-    initial={{ opacity: 0, scale: 0.95 }}
+    className="retro-window reading-page"
+    initial={{ opacity: 0, scale: 0.98 }}
     animate={{ opacity: 1, scale: 1 }}
-    style={{ marginTop: '4rem', padding: '4rem 2rem', textAlign: 'center' }}
+    transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+    style={{ marginTop: '2rem' }}
   >
-    <div className="retro-header" style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-      <div className="traffic-lights">
-        <Link to="/" className="dot dot-red"></Link>
-        <div className="dot dot-yellow"></div>
-        <div className="dot dot-green"></div>
-      </div>
+    <div className="retro-header">
       <div className="section-icon">
         <FolderOpen size={16} />
         <span>reading_list.txt</span>
       </div>
     </div>
-    <h2 style={{ fontSize: '2rem', marginBottom: '1rem', marginTop: '1rem' }}>Coming Soon</h2>
-    <p style={{ color: '#666', marginBottom: '2rem' }}>I'm currently curating a list of books and articles that have shaped my thinking.</p>
-    <Link to="/" style={{ color: '#3b82f6', fontWeight: 500, textDecoration: 'underline' }}>
-      Return to Home
-    </Link>
+    <div className="retro-content reading-page__body">
+      <p className="reading-page__intro">
+        Books and articles that have shaped my thinking. I&apos;ll keep adding here.
+      </p>
+      <ul className="reading-list">
+        {READING_LIST.map((book) => (
+          <li key={book.title} className="reading-list__item">
+            <div
+              className={`reading-list__cover${book.coverSrc ? '' : ' reading-list__cover--placeholder'}`}
+              aria-hidden
+            >
+              {book.coverSrc ? (
+                <img
+                  src={book.coverSrc}
+                  alt=""
+                  className="reading-list__cover-img"
+                  loading="lazy"
+                  decoding="async"
+                />
+              ) : (
+                <BookOpen size={18} className="text-gray-500" />
+              )}
+            </div>
+            <div className="reading-list__meta">
+              <div className="reading-list__title">{book.title}</div>
+              <div className="reading-list__author">{book.author}</div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <p className="reading-page__footer">
+        <Link to="/" className="reading-page__home-link">
+          ← Back to home
+        </Link>
+      </p>
+    </div>
   </motion.div>
 );
 
-const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null, setSelectedPhoto: (p: Photo | null) => void }) => (
-  <>
-    <motion.header
-      style={{ marginBottom: '3rem' }}
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-    >
-      <h1>
-        Aidan Nguyen Tran <NowPlaying />
-      </h1>
-      <div style={{ display: 'flex', gap: '1.25rem', marginBottom: '1.25rem', fontSize: '0.9rem' }}>
-        <a href="/assets/AidanNguyen_Tran_Resume (2).pdf" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', fontWeight: 500 }}>Resume</a>
-        <a href="mailto:aidan.nt76@gmail.com" style={{ color: '#3b82f6', fontWeight: 500 }}>Contact</a>
-        <Link to="/reading" style={{ color: '#3b82f6', fontWeight: 500 }}>Reading</Link>
+const WRITING_LIST = [
+  {
+    title: 'The Rise of the Content Engineer',
+    publication: 'Gallium',
+    date: 'April 2026',
+    tag: 'Strategy',
+    url: 'https://gallium.ai/blog/rise-of-the-content-engineer',
+    iconSrc: '/assets/gallium-logo.png',
+  },
+] as const;
+
+const WritingPage = () => (
+  <motion.div
+    className="retro-window reading-page"
+    initial={{ opacity: 0, scale: 0.98 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.35, ease: [0.23, 1, 0.32, 1] }}
+    style={{ marginTop: '2rem' }}
+  >
+    <div className="retro-header">
+      <div className="section-icon">
+        <FileText size={16} className="text-gray-500" />
+        <span>writing.md</span>
       </div>
-
-      <p style={{ maxWidth: '600px', fontSize: '1.05rem', color: '#444', marginBottom: '0.6rem' }}>
-        Eastvale, CA → UCSD Data Science. I love movies, climbing, camping, MMA, and basketball. I'm passionate about scaling SD's startup scene, consumer AI, and AI saftey/politics.
+    </div>
+    <div className="retro-content reading-page__body">
+      <p className="reading-page__intro">
+        Essays and posts on growth, content systems, and what I&apos;m learning while building.
       </p>
-
-      <p style={{ color: '#666', fontSize: '0.92rem', marginBottom: '0' }}>
-        Building agentic systems to make job markets efficient. <span style={{ opacity: 0.8 }}>(p.s. looking for a <a href="https://calendly.com/aidan-nt76/coldreach-aidan-nguyen-tran" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline' }}>cofounder</a>)</span>
+      <ul className="reading-list writing-list">
+        {WRITING_LIST.map((piece) => (
+          <li key={piece.url} className="reading-list__item">
+            <a
+              href={piece.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="writing-list__link"
+            >
+              <div className="reading-list__cover" aria-hidden>
+                <img
+                  src={piece.iconSrc}
+                  alt=""
+                  className="reading-list__cover-img"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <div className="reading-list__meta">
+                <div className="reading-list__title">
+                  {piece.title}
+                  <ExternalLink size={13} className="writing-list__external" aria-hidden />
+                </div>
+                <div className="reading-list__author">
+                  {piece.publication} · {piece.date} · {piece.tag}
+                </div>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p className="reading-page__footer">
+        <Link to="/" className="reading-page__home-link">
+          ← Back to home
+        </Link>
       </p>
+    </div>
+  </motion.div>
+);
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginTop: '1.25rem' }}>
+const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null, setSelectedPhoto: (p: Photo | null) => void }) => {
+  return (
+  <>
+    <header className="site-header site-header--home">
+      <motion.div className="site-header__links">
+        <a href="/assets/AidanNguyen_Tran_Resume (2).pdf" target="_blank" rel="noopener noreferrer">Resume</a>
+        <a href="mailto:aidan.nt76@gmail.com">Contact</a>
+        <Link to="/reading">Reading</Link>
+        <Link to="/writing">Writing</Link>
+      </motion.div>
+
+      <section className="hero-banner" aria-label="Introduction">
+        <HeroMountainBanner />
+        <div className="hero-banner__overlay">
+          <motion.div className="hero-banner__tools">
+            <NowPlaying />
+          </motion.div>
+          <motion.div className="hero-heading__row">
+            <h1 className="hero-heading__h1">
+              <span className="hero-heading__name">Aidan Nguyen Tran</span>
+            </h1>
+          </motion.div>
+        </div>
+      </section>
+
+      <p className="site-header__bio">
+        SF. Currently on leave from ucsd to lead growth at{' '} 
+        <a href="https://gallium.ai" target="_blank" rel="noopener noreferrer">Gallium</a> and hopefully retire my parents. <br /> <br /> I'm passionate about men's mental health and enviromental sustainability
+         - In my free time I explore how agentic workflows can improve these areas <br /> <br />
+
+         Currently building a open source growth harness to handle and close the loops on growth experiments.</p>
+
+      <motion.div className="site-header__social-pills">
         <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="https://github.com/Aidan1223f" target="_blank" rel="noopener noreferrer" className="social-pill github">
           <Github size={16} /> Aidan1223f
+        </motion.a>
+        <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="https://x.com/aids97426477" target="_blank" rel="noopener noreferrer" className="social-pill x">
+          <XIcon size={16} /> aids97426477
         </motion.a>
         <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="https://www.linkedin.com/in/aidan-nguyen-tran-277a3a258/" target="_blank" rel="noopener noreferrer" className="social-pill linkedin">
           <Linkedin size={16} /> LinkedIn
@@ -274,21 +451,65 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
         <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="https://www.instagram.com/ngyntrnn/" target="_blank" rel="noopener noreferrer" className="social-pill instagram">
           <Instagram size={16} /> ngyntrnn
         </motion.a>
-      </div>
-    </motion.header>
+      </motion.div>
+    </header>
 
     <main>
       <RetroWindow title="Building" icon={<img src="/assets/folder-icon-macos.webp" alt="Folder" style={{ width: 18, height: 18, objectFit: 'contain' }} />} delay={0.2} className="building-section">
-        <ExperienceItem
-          title="Founder"
-          company="Hermes AI"
-          url="http://joinhermes.co/"
-          date="Dec 2025 - Present"
-          icon={<img src="/assets/hermes_logo.png" alt="Hermes AI" style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }} />}
-          bullets={[
-            "Match, vet, and connect engineers to startups; 2M+ impressions, 6k users, worked w/ 2 YC companies"
-          ]}
-        />
+        <div className="experience-subsection">
+          <ExperienceItem
+            title="Growth Lead"
+            company="Gallium"
+            url="https://gallium.ai"
+            date="Mar 2026 - Present"
+            iconClassName="card-icon--logo-clean"
+            icon={<GalliumLogoIcon />}
+            bullets={[
+              "1st Growth",
+              "$200K in pipeline",
+              "700K impressions",
+              "Built SEO/GEO/Twitter products",
+              "$4M pre-seed raised"
+            ]}
+          />
+          <ExperienceItem
+            title="Founder"
+            company="Stealth"
+            iconClassName="card-icon--logo-clean"
+            icon={
+              <img
+                src="/assets/stealth-logo.png"
+                alt="Stealth"
+                style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }}
+              />
+            }
+            bullets={[
+              '700k impressions, customers include 2x YC companies,s Crowd Reply, and Adobe.',
+            ]}
+          />
+           <ExperienceItem
+            title="Founder"
+            company="Hermes AI"
+            url="http://joinhermes.co/"
+            date="Dec 2025 - Present"
+            icon={<img src="/assets/hermes_logo.png" alt="Hermes AI" style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }} />}
+            bullets={[
+              "Match, vet, and connect engineers to startups; 2M+ impressions, 6k users, worked w/ 2 YC companies"
+            ]}
+          />
+          <ExperienceItem
+            title="Growth Intern"
+            company="Cluely"
+            date="Jul 2025 - Sep 2025"
+            icon={<img src="/assets/cluely.jpeg" alt="Cluely" style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }} />}
+            bullets={[
+              "Made funny videos that got lots of view — learned a lot about the attention economy"
+            ]}
+          />
+        </div>
+      </RetroWindow>
+
+      <RetroWindow title="Personal projects" icon={<img src="/assets/terminal.png" alt="Terminal" style={{ width: 18, height: 18, objectFit: 'contain' }} />} delay={0.3}>
         <ExperienceItem
           title="Chief Executive Officer"
           company="Lockd"
@@ -299,22 +520,6 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
             "Kalshi for Friend Groups; 100+ users"
           ]}
         />
-        <ExperienceItem
-          title="Growth Intern"
-          company="Cluely"
-          date="Jul 2025 - Sep 2025"
-          icon={<img src="/assets/cluely.jpeg" alt="Cluely" style={{ width: '100%', height: '100%', borderRadius: '6px', objectFit: 'cover' }} />}
-          bullets={[
-            "Made funny videos that got lots of view — learned a lot about the attention economy"
-          ]}
-        />
-      </RetroWindow>
-
-      <RetroWindow title="Projects" icon={<img src="/assets/terminal.png" alt="Terminal" style={{ width: 18, height: 18, objectFit: 'contain' }} />} delay={0.3}>
-        <div style={{ padding: '2rem 1rem', textAlign: 'center', color: '#666', fontStyle: 'italic' }}>
-          Under construction. All my projects turn to start-ups lol.
-          Looking to build internal open-source frameworks and agentic systems for GTM, marketing, and product development in the future. <a href="mailto:aidan.nt76@gmail.com" style={{ color: '#3b82f6', fontWeight: 500 }}>Email me</a> if you wanna work together.
-        </div>
       </RetroWindow>
 
       <RetroWindow title="photo album" icon={<IOSPhotosIcon size={18} />} delay={0.4}>
@@ -371,7 +576,8 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
       </AnimatePresence>
     </main>
   </>
-);
+  );
+};
 
 function App() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
@@ -394,9 +600,11 @@ function App() {
           <div className="blob blob-3"></div>
         </div>
 
+        <div className="container-main">
         <Routes>
           <Route path="/" element={<Home selectedPhoto={selectedPhoto} setSelectedPhoto={setSelectedPhoto} />} />
-          <Route path="/reading" element={<ComingSoon />} />
+          <Route path="/reading" element={<ReadingPage />} />
+          <Route path="/writing" element={<WritingPage />} />
         </Routes>
 
         <motion.footer
@@ -404,16 +612,9 @@ function App() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 1 }}
         >
-          <div className="footer-links">
-            <a href="mailto:aidan.nt76@gmail.com" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Mail size={16} /> Email
-            </a>
-            <a href="https://github.com/Aidan1223f" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Github size={16} /> GitHub
-            </a>
-          </div>
-          <div>© 2026 Aidan Nguyen. Built with care.</div>
+          <div>© 2026 Aidan Nguyen.</div>
         </motion.footer>
+        </div>
       </div>
     </Router>
   );
