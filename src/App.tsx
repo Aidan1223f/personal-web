@@ -436,7 +436,7 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
         <a href="https://gallium.ai" target="_blank" rel="noopener noreferrer">Gallium</a> and hopefully retire my parents. <br /> <br /> I'm passionate about men's mental health and enviromental sustainability
          - In my free time I explore how agentic workflows can improve these areas <br /> <br />
 
-         Currently building a open source growth harness to handle and close the loops on growth experiments.</p>
+         Currently building a open source growth harness to handle and close the loops on growth experiments. more on this soon.</p>
 
       <motion.div className="site-header__social-pills">
         <motion.a whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} href="https://github.com/Aidan1223f" target="_blank" rel="noopener noreferrer" className="social-pill github">
@@ -484,7 +484,7 @@ const Home = ({ selectedPhoto, setSelectedPhoto }: { selectedPhoto: Photo | null
               />
             }
             bullets={[
-              '700k impressions, customers include 2x YC companies,s Crowd Reply, and Adobe.',
+              '700k impressions, customers include 2x YC companies, Crowd Reply, and Adobe.',
             ]}
           />
            <ExperienceItem
